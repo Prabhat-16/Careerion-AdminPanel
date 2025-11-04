@@ -37,15 +37,10 @@ const LoginPage = () => {
     setLoading(true);
 
     try {
-      // Replace with actual authentication logic
-      if (email === 'admin@example.com' && password === 'admin123') {
-        await login({ email, role: 'admin' });
-        navigate('/dashboard');
-      } else {
-        setError('Invalid email or password');
-      }
-    } catch (err) {
-      setError('Failed to log in. Please try again.');
+      await login(email, password);
+      // Navigation is handled in the login function
+    } catch (err: any) {
+      setError(err.message || 'Failed to log in. Please try again.');
       console.error('Login error:', err);
     } finally {
       setLoading(false);
