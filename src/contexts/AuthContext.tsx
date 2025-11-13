@@ -3,6 +3,20 @@ import type { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+// Set up axios interceptor to include admin token
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('adminToken');
+    if (token && config.url?.includes('/admin/')) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 const API_URL = 'http://localhost:5001/api';
 
 interface User {

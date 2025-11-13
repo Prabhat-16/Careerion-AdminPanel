@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
 import UsersPage from './pages/UsersPage';
 import AdminUsersPage from './pages/AdminUsersPage';
+import ChatLogsPage from './pages/ChatLogsPage';
 import JobsPage from './pages/JobsPage';
 import CompaniesPage from './pages/CompaniesPage';
 import ApplicationsPage from './pages/ApplicationsPage';
@@ -45,6 +46,7 @@ function App() {
         <Route path="/dashboard" element={<LayoutWrapper><Dashboard /></LayoutWrapper>} />
         <Route path="/users" element={<LayoutWrapper><UsersPage /></LayoutWrapper>} />
         <Route path="/admin-users" element={<LayoutWrapper><AdminUsersPage /></LayoutWrapper>} />
+        <Route path="/chat-logs" element={<LayoutWrapper><ChatLogsPage /></LayoutWrapper>} />
         <Route path="/jobs" element={<LayoutWrapper><JobsPage /></LayoutWrapper>} />
         <Route path="/companies" element={<LayoutWrapper><CompaniesPage /></LayoutWrapper>} />
         <Route path="/applications" element={<LayoutWrapper><ApplicationsPage /></LayoutWrapper>} />

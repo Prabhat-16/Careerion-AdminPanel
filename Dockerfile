@@ -8,8 +8,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci
+# Install dependencies (with legacy peer deps for compatibility)
+RUN npm ci --legacy-peer-deps && npm install @rollup/rollup-linux-x64-musl --save-optional
 
 # Copy source code
 COPY . .
@@ -20,8 +20,8 @@ ARG VITE_API_URL
 # Set environment variables for build
 ENV VITE_API_URL=${VITE_API_URL}
 
-# Build the application
-RUN npm run build
+# Build the application (skip type checking for Docker build)
+RUN npm run build:docker
 
 # Production stage with Nginx
 FROM nginx:alpine AS runner

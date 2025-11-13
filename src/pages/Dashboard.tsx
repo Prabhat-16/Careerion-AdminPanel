@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Paper, Typography, Box, Grid, Card, CardContent, LinearProgress, List, ListItem, ListItemText, ListItemAvatar, Avatar } from '@mui/material';
-import { People, Work, Business, Assignment, TrendingUp, PersonAdd, WorkOutline, BusinessCenter } from '@mui/icons-material';
+import { Paper, Typography, Box, Grid, Card, CardContent, LinearProgress, List, ListItem, ListItemText, ListItemAvatar, Avatar, Button, Alert } from '@mui/material';
+import { People, Work, Business, Assignment, TrendingUp, PersonAdd, WorkOutline, BusinessCenter, Add } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import axios from 'axios';
 
@@ -45,6 +45,8 @@ const Dashboard = () => {
   const [stats, setStats] = useState<Stats | null>(null);
   const [recentUsers, setRecentUsers] = useState<RecentUser[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sampleDataLoading, setSampleDataLoading] = useState(false);
+  const [sampleDataMessage, setSampleDataMessage] = useState<string | null>(null);
 
   useEffect(() => {
     fetchDashboardData();
@@ -58,7 +60,8 @@ const Dashboard = () => {
 
       // Fetch recent users
       const usersResponse = await axios.get(`${API_URL}/admin/users`);
-      const sortedUsers = usersResponse.data
+      const usersData = usersResponse.data.users || usersResponse.data;
+      const sortedUsers = usersData
         .sort((a: RecentUser, b: RecentUser) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
         .slice(0, 5);
       setRecentUsers(sortedUsers);
@@ -66,6 +69,23 @@ const Dashboard = () => {
       console.error('Error fetching dashboard data:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const createSampleData = async () => {
+    setSampleDataLoading(true);
+    setSampleDataMessage(null);
+    
+    try {
+      const response = await axios.post(`${API_URL}/admin/sample-data`);
+      setSampleDataMessage(response.data.message);
+      
+      // Refresh dashboard data
+      await fetchDashboardData();
+    } catch (error: any) {
+      setSampleDataMessage(error.response?.data?.error || 'Failed to create sample data');
+    } finally {
+      setSampleDataLoading(false);
     }
   };
 
@@ -117,9 +137,30 @@ const Dashboard = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" component="h1" sx={{ fontWeight: 600, mb: 3 }}>
-        Dashboard Overview
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Typography variant="h4" component="h1" sx={{ fontWeight: 600 }}>
+          Dashboard Overview
+        </Typography>
+        <Button
+          variant="outlined"
+          startIcon={<Add />}
+          onClick={createSampleData}
+          disabled={sampleDataLoading}
+          sx={{ textTransform: 'none' }}
+        >
+          {sampleDataLoading ? 'Creating...' : 'Create Sample Data'}
+        </Button>
+      </Box>
+
+      {sampleDataMessage && (
+        <Alert 
+          severity={sampleDataMessage.includes('successfully') ? 'success' : 'info'} 
+          sx={{ mb: 3 }}
+          onClose={() => setSampleDataMessage(null)}
+        >
+          {sampleDataMessage}
+        </Alert>
+      )}
       
       {/* Stats Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>

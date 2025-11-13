@@ -72,7 +72,12 @@ const UsersPage = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(`${API_URL}/admin/users`);
-      setUsers(response.data);
+      // Handle the API response structure: { users: [...], pagination: {...} }
+      if (response.data.users) {
+        setUsers(response.data.users);
+      } else {
+        setUsers(response.data); // Fallback for direct array response
+      }
     } catch (error) {
       console.error('Error fetching users:', error);
     } finally {

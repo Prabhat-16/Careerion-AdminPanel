@@ -8,6 +8,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import ChatIcon from '@mui/icons-material/Chat';
 import { Link, useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -21,6 +22,7 @@ const menuItems = [
   { path: '/dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
   { path: '/users', label: 'Users', icon: <PeopleIcon /> },
   { path: '/admin-users', label: 'Admin Users', icon: <AdminPanelSettingsIcon /> },
+  { path: '/chat-logs', label: 'Chat Logs', icon: <ChatIcon /> },
   { path: '/jobs', label: 'Jobs', icon: <WorkIcon /> },
   { path: '/companies', label: 'Companies', icon: <BusinessIcon /> },
   { path: '/applications', label: 'Applications', icon: <AssignmentIcon /> },
